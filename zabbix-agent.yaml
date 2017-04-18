@@ -1,0 +1,28 @@
+- hosts:  '{{ hosts }}'
+  remote_user: ec2-user
+#  remote_user: root
+  sudo: yes
+#  sudo: no
+  tasks:
+#    - name: chattr -i {{user}}
+#      shell: chattr -i /home/{{user}}/.ssh/authorized_keys
+
+#    - name: sync {{user}} ssh
+#      synchronize: src=/home/www/ansible/files/{{localdir}}/.ssh dest=/home/{{user}}/
+#
+#
+# scp -i /home/www/ansible/files/pemkey/hdp/key.pem  -r local/.ssh ec2-user@192.168.60.235:/home/ec2-user/
+     - name: install  zabbix repo
+       shell: rpm -ivh http://repo.zabbix.com/zabbix/3.0/rhel/6/x86_64/zabbix-release-3.0-1.el6.noarch.rpm
+     
+     - name: install zabbix-agent  
+       yum: pkg=zabbix-agent
+     
+     - name: modify zabbix-agent config
+       shell: sed -i 's/Server=127.0.0.1/Server=192.168.80.159/g' /etc/zabbix/zabbix_agentd.conf 
+     
+     - name: modify zabbix-agent config
+       shell:  sed -i 's/ServerActive=127.0.0.1/ServerActive=192.168.80.159:10051/g' /etc/zabbix/zabbix_agentd.conf 
+      
+     - name: restart  zabbix-agent    
+       shell: service zabbix-agent restart

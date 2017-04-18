@@ -1,0 +1,18 @@
+- hosts:  '{{ hosts }}'
+  remote_user: ec2-user
+  sudo: yes
+  tasks:
+#    - name: chattr -i {{user}}
+#      shell: chattr -i /home/{{user}}/.ssh/authorized_keys
+
+    - name: sync {{user}} ssh
+      synchronize: src=/home/www/ansible/files/{{localdir}}/.ssh dest=/home/{{user}}/
+
+    - name: chown {{user}}
+      shell: chown -R {{user}}:{{user}} /home/{{user}}/.ssh
+
+#    - name: chattr +i {{user}}
+#      shell: chattr +i /home/{{user}}/.ssh/authorized_keys
+#
+# scp -i /home/www/ansible/files/pemkey/hdp/key.pem  -r local/.ssh ec2-user@192.168.60.235:/home/ec2-user/
+

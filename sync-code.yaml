@@ -1,0 +1,17 @@
+# 发布代码脚本 new-create-version.sh调用
+- hosts: '{{ hosts }}'
+  remote_user: '{{user}}'
+  #remote_user: hdp
+  tasks:
+    #判断对应服务器版本回退目录是否存在
+    - name: ensure {{ temp_dir }} created
+      file: path={{ temp_dir }} state=directory mode=0755
+    #本机代码至对应服务器temp目录
+    - synchronize:
+          src: '{{ src }}'
+          dest: '{{ temp_dir }}'
+          delete: yes
+
+    - name: rsync local 
+      shell: rsync  --delete-after -a '{{ temp_dir }}' '{{ back_dir }}' 
+

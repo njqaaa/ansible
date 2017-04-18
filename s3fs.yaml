@@ -1,0 +1,25 @@
+- hosts:  '{{ hosts }}'
+  remote_user: ec2-user
+  sudo: yes
+  tasks:
+    - name: yum install
+      shell: yum install -y automake libtool gcc libstdc++-devel gcc-c++ curl curl curl-devel libxml2 libxml2* libxml2-devel openssl-devel mailcap
+
+    - name: rsync s3
+      synchronize: src=/home/www/ansible/files/s3/ dest=/tmp/
+
+    - name: install s3fs
+      shell: cd /tmp/fuse;
+             ./configure --prefix=/usr/local/fuse;
+             cp /usr/bin/automake-1.13 /usr/bin/automake-1.14;
+             make && make install;
+             export PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/lib64/pkgconfig/:/usr/local/fuse/lib/pkgconfig/;
+             modprobe fuse;
+             pkg-config —modversion fuse; 
+             cd /tmp/s3fs-fuse;
+             ./autogen.sh;
+             ./configure;
+             make && make install;
+             cp /usr/local/fuse/lib/libfuse.so.2 /usr/lib64/;
+    - name: yum fuse
+      yum: pkg=fuse state=latest

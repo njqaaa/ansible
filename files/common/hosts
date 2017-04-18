@@ -1,0 +1,19 @@
+127.0.0.1   localhost localhost.localdomain
+192.168.70.16 zookeeper-one
+192.168.70.164 zookeeper-two
+192.168.70.73 zookeeper-three
+192.168.70.164 oms-logs
+192.168.80.51 sap
+192.168.80.237 sapprd.fruitday.com
+192.168.80.237 sap.fruitday.com
+192.168.80.237 auth.fruitday.com
+192.168.80.237 pt.fruitday.com
+192.168.80.237 fruitday-soa.fruitday.com
+192.168.80.237 addrapi.fruitday.com
+192.168.80.237 call-center.fruitday.com
+192.168.80.237 cas.corp.fruitday.com
+192.168.80.237 wechat.fruitday.com
+192.168.80.237 log-server.corp.fruitday.com
+192.168.80.237 tmscar.fruitday.com
+192.168.80.237 tmsdata.fruitday.com
+192.168.80.237 fruitday-third-api.fruitday.com

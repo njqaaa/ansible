@@ -1,0 +1,85 @@
+- hosts:  '{{ hosts }}'
+  remote_user: ec2-user
+  sudo: yes
+  tasks:
+    - name: sync hosts
+      copy: src=/home/www/ansible/files/common/hosts dest=/etc/hosts
+
+    - name: sync exports
+      copy: src=/home/www/ansible/files/common/exports dest=/etc/exports
+
+    - name: sync sysctl.conf 
+      copy: src=/home/www/ansible/files/common/sysctl.conf dest=/etc/sysctl.conf
+
+    - name: sysctl -p
+      shell: sysctl -p
+
+    - name: restart nfs
+      shell: /etc/init.d/nfs restart
+
+    - name: sync limits.conf
+      copy: src=/home/www/ansible/files/common/limits.conf dest=/etc/security/
+
+    - name: yum telnet
+      yum: pkg=telnet state=latest
+
+    - name: yum iostst
+      yum: pkg=sysstat state=latest
+
+    - name: yum ifstat
+      yum: pkg=iproute state=latest
+
+    - name: yum iptraf
+      yum: pkg=iptraf state=latest
+
+    - name: yum tcpdump
+      yum: pkg=tcpdump state=latest
+
+    - name: yum nmap
+      yum: pkg=nmap state=latest
+
+    - name: yum wireshark
+      yum: pkg=wireshark state=latest
+
+    - name: yum mtr
+      yum: pkg=mtr state=latest
+
+    - name: yum locate
+      yum: pkg=mlocate state=latest
+
+    - name: updatedb
+      shell: updatedb
+
+    - name: UTC TIME
+      copy: src=/usr/share/zoneinfo/Asia/Shanghai dest=/etc/localtime
+
+    - name: rsyslogd
+      shell: /etc/init.d/rsyslog restart
+
+    - name: restart cron
+      shell: /etc/init.d/crond restart
+
+    - name: sync profile
+      copy: src=/home/www/ansible/files/common/profile dest=/etc/
+
+    - name: sync .bashrc
+      copy: src=/home/www/ansible/files/common/.bashrc dest=/home/ec2-user/
+
+    - name: copy iperf-2.0.5.tar.gz
+      copy: src=/usr/local/src/iperf-2.0.5.tar.gz  dest=/usr/local/src/
+
+    - name: install ipref
+      shell: tar -xzvf /usr/local/src/iperf-2.0.5.tar.gz -C /usr/local/src/;
+             cd /usr/local/src/iperf-2.0.5; 
+             ./configure --prefix=/usr/local/iperf;
+             make &&  make install
+
+    - name: install epel-release
+      shell: yum install epel-release -y
+
+    - name: install python-pip
+      shell: yum install python-pip -y
+
+    - name: install cheat
+      shell: pip install cheat
+
